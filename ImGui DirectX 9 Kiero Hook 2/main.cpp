@@ -74,11 +74,11 @@ int* iShotsFired;
 
 float recoil_amount = 0;
 
-Vec3* aimRecoilPunch;
-Vec3 oPunch{ 0,0,0 };
-
 Vec3* viewAngles;
 
+Vec3* aimRecoilPunch;
+
+Vec3 oPunch{ 0, 0, 0 };
 
 void HackInit()
 {
@@ -98,9 +98,9 @@ long __stdcall hkEndScene(LPDIRECT3DDEVICE9 pDevice)
 {
 	if (!init)
 	{
-		HackInit();
 		InitImGui(pDevice);
 		init = true;
+		HackInit();
 	}
 
 	if (GetAsyncKeyState(VK_INSERT) & 1)
@@ -118,10 +118,10 @@ long __stdcall hkEndScene(LPDIRECT3DDEVICE9 pDevice)
 		ImGui::Checkbox("ESP", &esp);
 		ImGui::Checkbox("BHOP", &bhop);
 		ImGui::Spacing();
-		ImGui::Checkbox("No Recoil", &recoil);
+		ImGui::Checkbox("No recoil", &recoil);
 		if (recoil)
 		{
-			ImGui::SliderFloat("Amount: ", &recoil_amount, 0, 1);
+			ImGui::SliderFloat("Amount", &recoil_amount, 0, 1);
 		}
 		ImGui::End();
 	}	
@@ -201,7 +201,7 @@ DWORD WINAPI BhopThread(LPVOID lp)
 	}
 }
 
-DWORD WINAPI RecoilThread(LPVOID lp)
+DWORD WINAPI RecoilThread(LPVOID lp) 
 {
 	while (true)
 	{
@@ -219,6 +219,8 @@ DWORD WINAPI RecoilThread(LPVOID lp)
 	}
 }
 
+
+
 BOOL WINAPI DllMain(HMODULE hMod, DWORD dwReason, LPVOID lpReserved)
 {
 	switch (dwReason)
@@ -227,7 +229,7 @@ BOOL WINAPI DllMain(HMODULE hMod, DWORD dwReason, LPVOID lpReserved)
 		DisableThreadLibraryCalls(hMod);
 		CreateThread(nullptr, 0, MainThread, hMod, 0, nullptr);
 		CreateThread(nullptr, 0, BhopThread, hMod, 0, nullptr);
-		CreateThread(nullptr, 0, RecoilThread, hMod, 0, nullptr);
+		CreateThread(nullptr, 0, RecoilThread , hMod, 0, nullptr);
 		break;
 	case DLL_PROCESS_DETACH:
 		kiero::shutdown();
